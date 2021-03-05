@@ -1,28 +1,56 @@
 #!/bin/bash -x
-echo "hello world"
-count=0
 H=0
 T=0
-declare -A dict
-while [ $count -lt 20 ]
+HH=0
+HT=0
+TH=0
+TT=0
+count=60
+declare -A coinCombination
+
+#singlet combination
+for ((i=1; i<=60; i++))
 do
-coin=$((RANDOM%2))
-if [ $coin -eq 1 ]
-then
-	H=$(($H+1))
-        dict[$count]="HEADS"
-else
-	T=$(($T+1))
-        dict[$count]="TAILS"
-fi
-((count++))
-
+	flip=$((RANDOM%2))
+	if [ $flip -eq 0 ]
+	then
+		((H++))
+	else
+		((T++))
+	fi
 done
-echo ${dict[@]}
-echo "heads are: " $H
-echo "tails are: " $T
-percentageH=$((100*$H/20))
-percentageT=$((100*$T/20))
-echo "percentage of Heads is: " $percentageH
-echo "percentage of Tails is: " $percentageT
+coinCombination["H"]=$(($(($H*100))/$count))
+coinCombination["T"]=$(($T*100/$count))
 
+#doublet combination
+count=30
+for ((i=1; i<=count; i++))
+do
+   flip=$((RANDOM%2))
+   if [ $flip -eq 0 ]
+   then
+      flip=$((RANDOM%2))
+		if [ $flip -eq 0 ]
+		then
+			((HH++))
+		else
+			((HT++))
+		fi
+   else
+      flip=$((RANDOM%2))
+      if [ $flip -eq 0 ]
+      then
+         ((TH++))
+      else
+         ((TT++))
+      fi
+   fi
+done
+
+echo $HH $HT $TH $TT
+coinCombination["HH"]=$(($HH*100/$count))
+coinCombination["HT"]=$(($HT*100/$count))
+coinCombination["TH"]=$(($TH*100/$count))
+coinCombination["TT"]=$(($TT*100/$count))
+
+echo ${coinCombination[@]}
