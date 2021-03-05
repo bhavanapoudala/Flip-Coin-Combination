@@ -1,4 +1,5 @@
 #!/bin/bash -x
+echo "hello world"
 count=0
 H=0
 T=0
